@@ -12,4 +12,9 @@ Opcion 1(4 jugadores):
 Opcion 2(jugadores indefinidos):
 	- 4 botones(+,-,aceptar,cancelar)
 	- 1 pantalla
+
+Grupo compuesto por:
+	-Miguel Angel Roldan Alcala
+	-David Vacas Miguel
+	-Pedro Redondo Rabanal
 	
