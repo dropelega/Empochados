@@ -1,9 +1,7 @@
 # Empochados
-## Ideas
+## 1. Ideas
 
-
-
-### Elementos necesarios:
+## Elementos necesarios:
 - Camara
 - Boton de control de juego
 
@@ -15,7 +13,7 @@
 - 4 botones(+,-,aceptar,cancelar)
 - 1 pantalla
 
-## Grupo compuesto por:
+## 2. Grupo compuesto por:
 - Miguel Angel Roldan Alcala
 - David Vacas Miguel
 - Pedro Redondo Rabanal
