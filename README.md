@@ -8,7 +8,7 @@
 - Boton de control de juego
 
 ### Opcion 1(4 jugadores):
-- 4 pantallas
+- 4 pantallas	
 - 3 botones por jugador (+, -, ok)
 	
 ### Opcion 2(jugadores indefinidos):
@@ -16,6 +16,6 @@
 - 1 pantalla
 
 ## Grupo compuesto por:
--Miguel Angel Roldan Alcala
--David Vacas Miguel
--Pedro Redondo Rabanal
+- Miguel Angel Roldan Alcala
+- David Vacas Miguel
+- Pedro Redondo Rabanal
