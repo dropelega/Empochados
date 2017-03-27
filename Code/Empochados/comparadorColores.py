@@ -15,7 +15,6 @@ class comparadorColores:
         for color in self.colores:
             proporcion[i] = color / mayor
             i+=1
-        print (proporcion)
         #Decidimos a que palo pertenece la carta en caso de las "proporciones"
         if proporcion[1] ==1:
             return "Espadas"
@@ -36,7 +35,6 @@ class comparadorColores:
         for color in self.colores:
             proporcion[i] = color / mayor
             i += 1
-        print(proporcion)
         if proporcion[1]==1:
             return "Espadas"
         if proporcion[2] == 1 and proporcion[0] < 0.5 and proporcion[3] < 0.85:
@@ -45,4 +43,24 @@ class comparadorColores:
             return "Copas"
         return "Bastos"
         
-        
+    def paloAs(self):
+        # Obtenemos el numero de pixeles del color de mayor cantidad en la imagen
+        mayor = self.colores[0]
+        for color in self.colores:
+            if color > mayor:
+                mayor = color
+        i = 0
+        proporcion = [0, 0, 0, 0]
+        for color in self.colores:
+            proporcion[i] = color / mayor
+            i += 1
+        if proporcion[0] == 1:
+            if proporcion[1]>0.7:
+                return "Espadas"
+            else:
+                return "Bastos"
+        if proporcion[2] == 1:
+            if proporcion[1]>0.6:
+                return "Copas"
+            else:
+                return "Oros"

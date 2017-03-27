@@ -36,4 +36,4 @@ class detectorNumeros:
                 rectOptimos.append(rb)
         for r in rectOptimos:
             cv2.rectangle(mini2, (r[0], r[1]), (r[0] + r[2], r[1] + r[3]), (0, 255, 0))
-        return len(rectOptimos)
+        return (len(rectOptimos), r[2]/r[3])

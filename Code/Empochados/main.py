@@ -3,13 +3,10 @@ import numpy as np
 import comparadorColores as cc
 import InputImages as ii
 import detectorNumeros as dn
-path='/home/miguel/PycharmProjects/Empochados-master/cartas/'
+path='/home/miguel/Empochados/cartas/'
 cargar= ii.InputImages(path)
 images=cargar.images()
-pathcompleto=path+"11_de_oros.jpeg"
-image=cv2.imread(pathcompleto)
-detector=dn.detectorNumeros(pathcompleto)
-numeroRectangulos=detector.deteccionNumero()
+
 #cv2.imshow('P',image)
 #cv2.waitKey()
 # define the list of range colors
@@ -19,8 +16,7 @@ for images1 in images:
     print(images1)
     image = cv2.imread(pathcompleto)
     detector = dn.detectorNumeros(pathcompleto)
-    numeroRectangulos = detector.deteccionNumero()
-
+    numeroRectangulos,ratio = detector.deteccionNumero()
     rcolors = [
         ([0, 0, 100], [110 , 110, 255]), #red
         ([86, 31, 31], [255, 210, 170]), #blue
@@ -45,15 +41,17 @@ for images1 in images:
                         colorsPercentaje[i]+=1
 
             #cv2.imshow("Colores", np.hstack([image,output]))
-           # cv2.waitKey(0)
+            #cv2.waitKey(0)
             i+=1
     comparador = cc.comparadorColores(colorsPercentaje)
-    print (colorsPercentaje)
     if(numeroRectangulos==1):
-        print (comparador.paloNormales())
+        if(ratio<0.45):
+            print(comparador.paloAs())
+        else:
+            print (comparador.paloNormales())
     else:
 
        print(comparador.paloFiguras())
-
+    print("")
 
         
