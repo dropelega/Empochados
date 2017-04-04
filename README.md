@@ -4,6 +4,9 @@
 ## Elementos necesarios:
 - Camara
 - Boton de control de juego
+### Opcion Escogida:
+- 1 pantalla
+- 4 botones (+, -, ok, cancelar)
 
 ### Opcion 1(4 jugadores):
 - 4 pantallas	
