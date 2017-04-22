@@ -88,7 +88,11 @@ void loop()
          }else{
            enterless = true;
          }
-         cards=40-(40%players);
+         if(40%players!=0){
+           cards=36;
+         }else{
+           cards=40;
+         }
          
          lcd.setCursor ( 0, 0 );            // go to the top left corner
          lcd.print("Num jugadores:"); // wriute this string on the top row
@@ -103,7 +107,7 @@ void loop()
              rounds = ((cards/players)*2)-1;
              reset();
              enterok = false;
-             state = 1;
+             state = 1; 
            }
          }else{
            enterok = true;
@@ -117,9 +121,10 @@ void loop()
              if(crupier!=players){
                better=crupier+1;
              }else{
-               better=0;
+               better=1;
              }
              enterok = false;
+             break; 
            }
          }else{
            enterok = true;
@@ -129,11 +134,13 @@ void loop()
              reset();
              state=0;
              entercancel = false;
+             break; 
            }
          }else{
            entercancel = true;
          }
-         
+         lcd.setCursor ( 8, 0 );
+         lcd.print("           ");
          lcd.setCursor ( 0, 0 );
          lcd.print("Reparte:"); 
          lcd.setCursor ( 0, 1 );           
@@ -183,19 +190,31 @@ void loop()
         
       break;
       case 3://apuestas
+      if(better==crupier){//meter condiciones de maxima y minima apuesta
+         summer=0;
+         for(int i=0;i<6;i++){
+           if(i!=crupier-1){
+             summer+=bets[i];
+           }
+          
+         }
+         if(bets[better-1]+summer==inhand){
+            bets[better-1]++;
+          }
+       }
         if(okButtonState==HIGH){
           if(enterok == true ){
-            if(better==crupier-1){
+            if(better==crupier){
               if(crupier!=players){
                better=crupier+1;
               }else{
-               better=0;
+               better=1;
              }
              reset();
-             state = 4;
+             state = 4; 
             }else{
              if(better==players){
-               better=0;
+               better=1;
              }else{
               better++;
              }
@@ -210,21 +229,22 @@ void loop()
              reset();
              state=0;
              entercancel = false;
+             break; 
            }
          }else{
            entercancel = true;
          }
          if(plusButtonState==HIGH){
            if(enterplus == true){
-             bets[better]++;
-             /*if(better+1==crupier){//meter condiciones de maxima y minima apuesta
+             bets[better-1]++;
+             /*if(better==crupier){//meter condiciones de maxima y minima apuesta
                summer=0;
                for(int i=0;i<6;i++){
-                 if(i!=crupier){
+                 if(i!=crupier-1){
                    summer+=bets[i];
                  }
-                if(bets[better]+summer==inhand){
-                  bets[better]++;
+                if(bets[better-1]+summer==inhand){
+                  bets[better-1]++;
                 }
                }
              }*/
@@ -235,55 +255,42 @@ void loop()
          }
          if(lessButtonState==HIGH){
            if(enterless == true){
-             bets[better]--;
-             /*if(better==crupier){
+             bets[better-1]--;
+             if(better==crupier){
                int summer=0;
                for(int i=0;i<6;i++){
-                 if(i!=crupier){
+                 if(i!=crupier-1){
                    summer+=bets[i];
                  }
-                if(bets[better]+summer==inhand){
-                  bets[better]--;
+               }
+                if(bets[better-1]+summer==inhand){
+                  bets[better-1]--;
                 }
                }
-             }*/
+             }
              enterless = false;
-           }
+           
          }else{
            enterless = true;
          }
       
          lcd.setCursor ( 0, 0 );
-         lcd.print("Pinte: "+beer);
-         lcd.setCursor ( 8, 0 );
+         lcd.print("Pinte: ");
+         lcd.setCursor ( 9, 0 );
          lcd.print(beer);  
          lcd.setCursor ( 0, 1 );           
          lcd.print("Apuesta Jug "); 
-         lcd.setCursor ( 13, 1 );
+         lcd.setCursor ( 14, 1 );
          lcd.print(better); 
+         lcd.setCursor(9,2);
+         lcd.print("       ");
          lcd.setCursor ( 0, 2);        
          lcd.print("Apuesta: ");
          lcd.setCursor(0,3);
          lcd.print("                ");
          lcd.setCursor ( 7, 3 );        
-         lcd.print(bets[better]); 
+         lcd.print(bets[better-1]); 
       
-        /*
-         lcd.setCursor ( 0, 0 );
-         lcd.print("Pinte: "+beer);
-         lcd.setCursor ( 8, 0 );
-         lcd.print(beer);  
-         lcd.setCursor ( 0, 1 );           
-         lcd.print("Apuesta Jug "); 
-         lcd.setCursor ( 13, 1 );
-         lcd.print(better); 
-         lcd.setCursor ( 0, 2);        
-         lcd.print("Apuesta: ");
-         lcd.setCursor(0,3);
-         lcd.print("                ");
-         lcd.setCursor ( 7, 3 );        
-         lcd.print(bets[better]); 
-        */
       break;
       case 4://jugando
          if(okButtonState==HIGH){
@@ -293,36 +300,43 @@ void loop()
          if(cancelButtonState==HIGH){
            reset();
            state=0;
+           break; 
          }
          lcd.setCursor ( 0, 0 );
          lcd.print("Pinte: "); 
-         lcd.setCursor ( 0, 8 );
+         lcd.setCursor ( 9, 0 );
          lcd.print(beer); 
          lcd.setCursor ( 0, 1 );           
-         lcd.print("    "); 
-         lcd.setCursor ( 3, 2 );        
-         lcd.print("Jugando.."); 
+         lcd.print("               "); 
+         lcd.setCursor ( 4, 2 );        
+         lcd.print("Jugando..."); 
+         lcd.setCursor(0,2);
+         lcd.print("    ");  
          lcd.setCursor( 0,  3);        
-         lcd.print(" "); 
+         lcd.print("               "); 
       break;
       case 5://apuntar resultados
        if(okButtonState==HIGH){
          if(enterok == true){ 
-            if(bazer==bets[better]){
-              score[better]+=10+bazer*5;
+            if(bazer==bets[better-1]){
+              score[better-1]+=10+bazer*5;
             }else{
-              score[better]-=abs(bazer-bets[better])*5;
+              score[better-1]-=abs(bazer-bets[better-1])*5;
             }
             if(better==crupier){
              reset();
              state =6;
+             for(int j=0;j<players;j++){
+                 bets[j]=0;
+             }
             }else{
-             if(better==players-1){
-               better=0;
+             if(better==players){
+               better=1;
              }else{
               better++;
              }
             }
+            bazer = 0;
             enterok = false;
          }
        }else{
@@ -333,6 +347,7 @@ void loop()
          reset();
          state=0;
          entercancel = false;
+         break; 
          }
        }else{
          entercancel = true;
@@ -355,9 +370,15 @@ void loop()
        }
     
        lcd.setCursor ( 0, 0 );
-       lcd.print("Pinte: "+beer); 
+       lcd.print("Pinte: "); 
+       lcd.setCursor ( 9, 0 );
+       lcd.print(beer);
        lcd.setCursor ( 0, 1 );           
-       lcd.print("Bazas Jugador "+better); 
+       lcd.print("Bazas Jugador ");
+       lcd.setCursor ( 15, 1 );           
+       lcd.print(better);
+       lcd.setCursor ( 11, 2);        
+       lcd.print("   ");
        lcd.setCursor ( 0, 2);        
        lcd.print("Num Bazas: "); 
        lcd.setCursor ( 7, 3 );        
@@ -375,8 +396,13 @@ void loop()
                rounds--;
                if(inhand==0){
                  reset();
-                 state=7; 
+                 state=7;
                }else{
+                 if(crupier==players){
+                   crupier=1;
+                 }else{
+                 crupier++;
+                 }
                  reset();
                  state=1;
                }
@@ -390,13 +416,15 @@ void loop()
              reset();
              state=0;
              entercancel = false;
+             break; 
+             
             }
            }else{
              entercancel = true;
            }
            if(plusButtonState==HIGH){
              if(enterplus == true){
-               if(currentPlayer<players){
+               if(currentPlayer<players-1){
                  currentPlayer++;
                }
                enterplus = false;
@@ -414,14 +442,23 @@ void loop()
            }else{
              enterless = true;
            }
-         lcd.setCursor ( 2, 0);        
+           
+         lcd.setCursor ( 0, 0);        
          lcd.print("Puntuaciones"); 
+         lcd.setCursor ( 8, 1);
+         lcd.print("            ");
          lcd.setCursor ( 0, 1);
-         lcd.print("Jugador "+(currentPlayer+1)); 
+         lcd.print("Jugador ");
+         lcd.setCursor ( 9, 1);        
+         lcd.print((currentPlayer+1)); 
          lcd.setCursor ( 0, 2);           
-         lcd.print(score[currentPlayer]+" puntos"); 
+         lcd.print("            "); 
+         lcd.setCursor ( 5, 2);           
+         lcd.print(score[currentPlayer]);
+         lcd.setCursor ( 7, 2);           
+         lcd.print(" Puntos");
          lcd.setCursor ( 0, 3 );        
-         lcd.print(""); 
+         lcd.print("                    "); 
          break;
       case 7://fin de la partida
         {
@@ -433,12 +470,20 @@ void loop()
         }
          lcd.setCursor ( 0, 0);        
          lcd.print("El ganador es:"); 
+         lcd.setCursor(9,1);
+         lcd.print("           ");
          lcd.setCursor ( 0, 1);
-         lcd.print("Jugador "+ winneador); 
-         lcd.setCursor ( 0, 2);           
-         lcd.print(score[winneador] +" puntos"); 
-         lcd.setCursor ( 0, 3 );        
-         lcd.print("¡Felicidades!");
+         lcd.print("Jugador "); 
+         lcd.setCursor ( 9,0 );
+         lcd.print(winneador);
+         lcd.setCursor(0,2);
+         lcd.print("             ");
+         lcd.setCursor ( 5, 2);           
+         lcd.print(score[winneador]); 
+         lcd.setCursor ( 7, 2);           
+         lcd.print(" puntos"); 
+         lcd.setCursor (0 , 3 );        
+         lcd.print("  ¡ Felicidades !");
         }
          break;
       default://errores
