@@ -4,17 +4,13 @@ import comparadorColores as cc
 import InputImages as ii
 import detectorNumeros as dn
 import serial
-path='/home/miguel/Empochados/cartas/'
-cargar= ii.InputImages(path)
-images=cargar.images()
-pathcompleto=path+"11_de_oros.jpeg"
+
 #cv2.imshow('P',image)
 #cv2.waitKey()
 # define the list of range colors
 
 ser = serial.Serial('/dev/ttyUSB0', 9600)
-detector = dn.detectorNumeros(pathcompleto)
-numeroRectangulos,ratio = detector.deteccionNumero()
+detector = dn.detectorNumeros()
 rcolors = [
     ([0, 0, 100], [110 , 110, 255]), #red
     ([86, 31, 31], [255, 210, 170]), #blue
@@ -24,8 +20,12 @@ rcolors = [
 colorsPercentaje = [0,0,0,0]
 while(1):
     i = 0
-    image = cv2.imread(pathcompleto)
-    if(ser.read()=="p"):
+    lectura = str(ser.read())
+    lectura = lectura.split('\'')
+    if(lectura[1]=='d'):
+        ret, image = cap.read()
+        image = np.rot90(image, 3)
+        numeroRectangulos,ratio = detector.deteccionNumero(image)
         if(numeroRectangulos>1):
             shape=image.shape
             image=image[0:int(shape[0]/4),0:int(shape[1]/2.2)]
