@@ -1,9 +1,7 @@
 import cv2
 class detectorNumeros:
-    def __init__(self,path):
-        self.image=cv2.imread(path)
-    def deteccionNumero(self):
-        image2 = self.image[40:120, 40:120]
+    def deteccionNumero(self,image):
+        image2 = image[40:120, 40:120]
         image3 = cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY)
         mini = image3.copy()
         mini2 = cv2.resize(mini, (250, 250))
